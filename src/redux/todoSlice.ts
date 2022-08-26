@@ -1,15 +1,15 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { Todo } from "../models/Todo";
 import { v4 as uuidv4 } from "uuid";
+import { Todo } from "../models/Todo";
 
 export interface TodoState {
   tasks: Todo[];
 }
 
 const initialState: TodoState = {
-  tasks: sessionStorage.getItem('tasks')
-    //@ts-ignore
-    ? JSON.parse(sessionStorage.getItem('tasks')).map((value) => ({
+  tasks: sessionStorage.getItem("tasks")
+    ? // @ts-ignore
+      JSON.parse(sessionStorage.getItem("tasks")).map((value) => ({
         ...value,
         edit: false,
       }))
@@ -23,7 +23,7 @@ const todoSlice = createSlice({
     addTodo: {
       reducer: (state, action: PayloadAction<Todo>) => {
         state.tasks.push(action.payload);
-        sessionStorage.setItem('tasks', JSON.stringify(state.tasks));
+        sessionStorage.setItem("tasks", JSON.stringify(state.tasks));
       },
       prepare: (description: string) => ({
         payload: {
@@ -34,31 +34,38 @@ const todoSlice = createSlice({
       }),
     },
     updateTodo: (state, action) => {
-      const index = state.tasks.findIndex((todo) => todo.id === action.payload.id);
+      const index = state.tasks.findIndex(
+        (todo) => todo.id === action.payload.id,
+      );
       state.tasks[index].description = action.payload.description;
-      sessionStorage.setItem('tasks', JSON.stringify(state.tasks));
-
+      sessionStorage.setItem("tasks", JSON.stringify(state.tasks));
     },
     removeTodo(state, action: PayloadAction<string>) {
       const index = state.tasks.findIndex((todo) => todo.id === action.payload);
       state.tasks.splice(index, 1);
-      sessionStorage.setItem('tasks', JSON.stringify(state.tasks));
-
+      sessionStorage.setItem("tasks", JSON.stringify(state.tasks));
     },
-    defaultTodoListAction:(state, action)=> {
-      state.tasks = action.payload
+    defaultTodoListAction: (state, action) => {
+      state.tasks = action.payload;
     },
     setTodoStatus(
       state,
-      action: PayloadAction<{ completed: boolean; id: string }>
+      action: PayloadAction<{ completed: boolean; id: string }>,
     ) {
-      const index = state.tasks.findIndex((todo) => todo.id === action.payload.id);
+      const index = state.tasks.findIndex(
+        (todo) => todo.id === action.payload.id,
+      );
       state.tasks[index].completed = action.payload.completed;
-      sessionStorage.setItem('tasks', JSON.stringify(state.tasks));
-
+      sessionStorage.setItem("tasks", JSON.stringify(state.tasks));
     },
   },
 });
 
-export const { addTodo, removeTodo, setTodoStatus,defaultTodoListAction ,updateTodo} = todoSlice.actions;
+export const {
+  addTodo,
+  removeTodo,
+  setTodoStatus,
+  defaultTodoListAction,
+  updateTodo,
+} = todoSlice.actions;
 export default todoSlice.reducer;

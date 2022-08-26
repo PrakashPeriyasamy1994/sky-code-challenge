@@ -1,6 +1,8 @@
+import { Todo } from "./Todo";
+
 export interface TodoListProps {
-  todoList: any,
-  title: string,
+  todoList: Todo[];
+  title: string;
   todoDescription: string;
   setTodoDescription: (description: string) => void;
   setStatus: (status: string) => void;

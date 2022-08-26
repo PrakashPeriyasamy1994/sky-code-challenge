@@ -3,5 +3,5 @@ export interface HeaderProps {
   todoDescription: string;
   setStatus: (status: string) => void;
   setTodoDescription: (description: string) => void;
-  editedID: string
+  editedID: string;
 }

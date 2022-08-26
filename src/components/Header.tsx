@@ -1,10 +1,17 @@
+import React from "react";
 import { useDispatch } from "react-redux";
+
 import { AppDispatch } from "../redux/store";
 import { addTodo, updateTodo } from "../redux/todoSlice";
-import { HeaderProps } from '../models/HeaderProps'
+import { HeaderProps } from "../models/HeaderProps";
 
-
-export function Header({ status, setStatus, todoDescription, setTodoDescription, editedID }: HeaderProps) {
+function Header({
+  status,
+  setStatus,
+  todoDescription,
+  setTodoDescription,
+  editedID,
+}: HeaderProps) {
   const dispatch = useDispatch<AppDispatch>();
 
   return (
@@ -18,24 +25,28 @@ export function Header({ status, setStatus, todoDescription, setTodoDescription,
           required
         />
         <button
+          data-testid="add-button"
+          type="button"
           onClick={() => {
-            if (todoDescription && status == "add") {
+            if (todoDescription && status === "add") {
               dispatch(addTodo(todoDescription));
-
             } else {
-              dispatch(updateTodo({
-                id: editedID,
-                description: todoDescription
-              }));
+              dispatch(
+                updateTodo({
+                  id: editedID,
+                  description: todoDescription,
+                }),
+              );
             }
             setTodoDescription("");
-            setStatus("add")
+            setStatus("add");
           }}
         >
-          {status == "add" ? "Add" : "Update"}
+          {status === "add" ? "Add" : "Update"}
         </button>
       </p>
-
     </div>
   );
 }
+
+export default Header;
